@@ -1,0 +1,347 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ skill_name }} - {{ level_name }}</title>
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'test_app/images/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: linear-gradient(135deg,#050505,#101010 45%,#0a0a0a);
+            --text-main: #ffffff;
+            --card-bg: rgba(255,255,255,0.03);
+            --card-border: rgba(244,180,0,0.18);
+            --muted-text: #d7d7d7;
+            --accent: #f4b400;
+            --accent-dark: #d89b00;
+            --input-bg: #0f0f0f;
+            --input-border: rgba(255,255,255,0.12);
+            --panel-bg: rgba(244,180,0,0.05);
+        }
+
+        body.light-mode {
+            --bg-main: #f7f7f7;
+            --text-main: #111111;
+            --card-bg: #ffffff;
+            --card-border: rgba(0,0,0,0.08);
+            --muted-text: #444444;
+            --accent: #f4b400;
+            --accent-dark: #d89b00;
+            --input-bg: #ffffff;
+            --input-border: rgba(0,0,0,0.12);
+            --panel-bg: rgba(244,180,0,0.08);
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+
+        body {
+            min-height:100vh;
+            background:var(--bg-main);
+            color:var(--text-main);
+            padding:30px;
+        }
+
+        .top-actions {
+            max-width:980px;
+            margin:0 auto 18px;
+            display:flex;
+            justify-content:flex-end;
+        }
+
+        .theme-toggle-btn {
+            border:none;
+            padding:12px 16px;
+            border-radius:14px;
+            font-weight:700;
+            cursor:pointer;
+            background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+            color:#111;
+        }
+
+        .box {
+            max-width:980px;
+            margin:auto;
+            background:var(--card-bg);
+            border:1px solid var(--card-border);
+            border-radius:24px;
+            padding:28px;
+            box-shadow:0 18px 40px rgba(0,0,0,0.24);
+        }
+
+        .top {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:20px;
+            flex-wrap:wrap;
+            margin-bottom:24px;
+        }
+
+        .top h1 {
+            font-size:36px;
+            line-height:1.2;
+        }
+
+        .timer {
+            background:rgba(244,180,0,0.10);
+            border:1px solid rgba(244,180,0,0.25);
+            color:#ffd76b;
+            padding:12px 16px;
+            border-radius:14px;
+            font-weight:800;
+            font-size:20px;
+            min-width:120px;
+            text-align:center;
+        }
+
+        .student-line,
+        .small-note {
+            color:var(--muted-text);
+            line-height:1.8;
+        }
+
+        .student-line {
+            margin-bottom:18px;
+            font-size:16px;
+        }
+
+        .progress-line {
+            margin-bottom:20px;
+            color:var(--accent);
+            font-weight:700;
+        }
+
+        .panel {
+            margin-bottom:20px;
+            padding:20px;
+            border-radius:18px;
+            background:var(--panel-bg);
+            border:1px solid var(--card-border);
+        }
+
+        .panel h2 {
+            margin-bottom:10px;
+            color:var(--accent);
+            font-size:26px;
+        }
+
+        .panel p, .panel li {
+            line-height:1.9;
+            color:var(--text-main);
+            font-size:16px;
+        }
+
+        ul {
+            padding-left:22px;
+        }
+
+        .audio-box {
+            margin-top:10px;
+        }
+
+        .audio-title {
+            margin-top:12px;
+            margin-bottom:8px;
+            color:#ffd76b;
+            font-weight:600;
+            font-size:14px;
+        }
+
+        audio {
+            width:100%;
+            margin-top:8px;
+        }
+
+        .writing-image {
+            width:100%;
+            max-width:700px;
+            display:block;
+            margin:16px auto 0;
+            border-radius:18px;
+            border:1px solid var(--card-border);
+            box-shadow:0 12px 28px rgba(0,0,0,0.22);
+        }
+
+        .question {
+            margin-bottom:18px;
+        }
+
+        label {
+            display:block;
+            margin-bottom:8px;
+            font-weight:600;
+            font-size:18px;
+        }
+
+        textarea {
+            width:100%;
+            min-height:110px;
+            padding:14px;
+            border-radius:14px;
+            border:1px solid var(--input-border);
+            background:var(--input-bg);
+            color:var(--text-main);
+            outline:none;
+            resize:vertical;
+            font-size:15px;
+        }
+
+        textarea:focus {
+            border-color:var(--accent);
+            box-shadow:0 0 0 4px rgba(244,180,0,0.12);
+        }
+
+        button {
+            width:100%;
+            padding:16px;
+            border:none;
+            border-radius:14px;
+            background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+            color:#111;
+            font-weight:800;
+            font-size:16px;
+            cursor:pointer;
+            margin-top:10px;
+        }
+
+        .small-note {
+            margin-top:14px;
+            text-align:center;
+            font-size:14px;
+        }
+
+        @media (max-width:700px) {
+            body { padding:16px; }
+            .box { padding:18px; }
+            .top h1 { font-size:28px; }
+            .panel h2 { font-size:22px; }
+            label { font-size:16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-actions">
+        <button id="themeToggle" class="theme-toggle-btn" type="button">🌙 Dark / ☀ Light</button>
+    </div>
+
+    <div class="box">
+        <div class="top">
+            <h1>{{ skill_name }} - {{ level_name }}</h1>
+            <div class="timer" id="timer">04:00</div>
+        </div>
+
+        <div class="student-line">
+            <strong>{{ student.full_name }}</strong> | Age: {{ student.age }} | ID: {{ student.student_id }}
+        </div>
+
+        <div class="progress-line">
+            Level {{ current_step }} of {{ total_steps }}
+        </div>
+
+        <div class="panel">
+            <h2>Instructions</h2>
+            <p>{{ level_data.instruction }}</p>
+
+            {% if skill_name == "Listening" and level_data.audio_files %}
+                <div class="audio-box">
+                    {% for audio_file in level_data.audio_files %}
+                        <div class="audio-title">Audio {{ forloop.counter }}</div>
+                        <audio controls preload="metadata">
+                            <source src="{% static audio_file %}" type="video/mp4">
+                            Your browser does not support the audio element.
+                        </audio>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if skill_name == "Writing" and level_data.image %}
+                <img src="{% static level_data.image %}" alt="Writing Task Image" class="writing-image">
+            {% endif %}
+        </div>
+
+        <div class="panel">
+            <h2>Task / Prompt</h2>
+            <ul>
+                {% for item in level_data.prompt %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <form method="post" id="skillForm">
+            {% csrf_token %}
+            <input type="hidden" name="remaining_seconds" id="remaining_seconds" value="{{ remaining_seconds }}">
+            <input type="hidden" name="time_up" id="time_up" value="0">
+
+            {% for question in level_data.questions %}
+                <div class="question">
+                    <label>{{ forloop.counter }}. {{ question }}</label>
+                    <textarea name="q{{ forloop.counter }}"></textarea>
+                </div>
+            {% endfor %}
+
+            <button type="submit">Next</button>
+        </form>
+
+        <div class="small-note">
+            When the timer ends, the test will stop automatically and the current reached level will be saved.
+        </div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById("themeToggle");
+
+        function applyTheme(theme) {
+            if (theme === "light") {
+                document.body.classList.add("light-mode");
+            } else {
+                document.body.classList.remove("light-mode");
+            }
+        }
+
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        applyTheme(savedTheme);
+
+        if (themeToggle) {
+            themeToggle.addEventListener("click", function () {
+                const isLight = document.body.classList.contains("light-mode");
+                const newTheme = isLight ? "dark" : "light";
+                localStorage.setItem("theme", newTheme);
+                applyTheme(newTheme);
+            });
+        }
+
+        let timeLeft = parseInt(document.getElementById("remaining_seconds").value || "240");
+        const timerDisplay = document.getElementById("timer");
+        const form = document.getElementById("skillForm");
+        const hiddenRemaining = document.getElementById("remaining_seconds");
+        const hiddenTimeUp = document.getElementById("time_up");
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+            hiddenRemaining.value = timeLeft;
+        }
+
+        function tick() {
+            updateTimerDisplay();
+
+            if (timeLeft <= 0) {
+                hiddenTimeUp.value = "1";
+                hiddenRemaining.value = "0";
+                form.submit();
+                return;
+            }
+
+            timeLeft--;
+        }
+
+        updateTimerDisplay();
+        setInterval(tick, 1000);
+    </script>
+</body>
+</html>

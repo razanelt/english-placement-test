@@ -1,0 +1,419 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UpperSkills - Teacher Panel</title>
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'test_app/images/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main:
+                radial-gradient(circle at 15% 25%, rgba(244,180,0,0.08), transparent 20%),
+                radial-gradient(circle at 85% 20%, rgba(244,180,0,0.06), transparent 20%),
+                linear-gradient(135deg, #050505, #101010 45%, #0a0a0a);
+            --text-main: #ffffff;
+            --card-bg: rgba(255,255,255,0.03);
+            --card-border: rgba(244,180,0,0.18);
+            --muted-text: #d7d7d7;
+            --accent: #f4b400;
+            --accent-dark: #d89b00;
+            --input-bg: #0f0f0f;
+            --input-border: rgba(255,255,255,0.12);
+            --thead-bg: rgba(244,180,0,0.10);
+            --row-hover: rgba(244,180,0,0.04);
+            --soft-btn-bg: rgba(255,255,255,0.06);
+            --soft-btn-border: rgba(255,255,255,0.08);
+            --pill-bg: rgba(244,180,0,0.10);
+            --pill-text: #ffd76b;
+        }
+
+        body.light-mode {
+            --bg-main: #f5f5f5;
+            --text-main: #1a1a1a;
+            --card-bg: #ffffff;
+            --card-border: #dddddd;
+            --muted-text: #333333;
+            --accent: #cc8400;
+            --accent-dark: #8a5b00;
+            --input-bg: #ffffff;
+            --input-border: #cfcfcf;
+            --thead-bg: #fff1cc;
+            --row-hover: #faf4e6;
+            --soft-btn-bg: #ffffff;
+            --soft-btn-border: #d9d9d9;
+            --pill-bg: #fff1cc;
+            --pill-text: #7a4b00;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+
+        body {
+            min-height:100vh;
+            background: var(--bg-main);
+            color: var(--text-main);
+        }
+
+        .topbar {
+            border-bottom:1px solid rgba(244,180,0,0.18);
+            background: linear-gradient(135deg,#050505,#101010 45%,#0a0a0a);
+        }
+
+        .topbar-inner {
+            max-width:1550px;
+            margin:auto;
+            padding:18px 28px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:20px;
+            flex-wrap:wrap;
+        }
+
+        .brand-logo-img {
+            height:72px;
+            width:auto;
+            display:block;
+        }
+
+        .topbar-subtitle {
+            color:#d8d8d8;
+        }
+
+        .theme-toggle-btn {
+            border: none;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: #111;
+        }
+
+        .page {
+            max-width:1550px;
+            margin:auto;
+            padding:34px 28px 42px;
+        }
+
+        .hero,
+        .stat-box,
+        .search-card,
+        .table-card {
+            background: var(--card-bg);
+            border:1px solid var(--card-border);
+            border-radius:24px;
+            box-shadow:0 18px 40px rgba(0,0,0,0.08);
+        }
+
+        .hero {
+            margin-bottom:24px;
+            padding:28px;
+        }
+
+        .hero h1 {
+            font-size:42px;
+            margin-bottom:10px;
+            color: var(--text-main);
+        }
+
+        .hero p,
+        .muted {
+            color: var(--muted-text);
+            line-height:1.8;
+            font-size:16px;
+        }
+
+        .stats-row {
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:18px;
+            margin-bottom:24px;
+        }
+
+        .stat-box {
+            padding:20px;
+        }
+
+        .stat-box h3 {
+            color:var(--accent);
+            font-size:15px;
+            margin-bottom:10px;
+        }
+
+        .stat-box .value {
+            font-size:28px;
+            font-weight:800;
+            color: var(--text-main);
+        }
+
+        .search-card {
+            padding:22px;
+            margin-bottom:24px;
+        }
+
+        .search-form {
+            display:flex;
+            gap:12px;
+            flex-wrap:wrap;
+        }
+
+        .search-form input {
+            flex:1;
+            min-width:260px;
+            padding:14px 16px;
+            border-radius:14px;
+            border:1px solid var(--input-border);
+            background:var(--input-bg);
+            color:var(--text-main);
+            outline:none;
+            font-size:15px;
+        }
+
+        .search-btn,
+        .clear-btn {
+            display:inline-block;
+            text-decoration:none;
+            padding:14px 18px;
+            border-radius:14px;
+            font-weight:800;
+            border:none;
+            cursor:pointer;
+        }
+
+        .search-btn {
+            background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+            color:#111;
+        }
+
+        .clear-btn {
+            background:var(--soft-btn-bg);
+            color:var(--text-main);
+            border:1px solid var(--soft-btn-border);
+        }
+
+        .table-card {
+            padding:22px;
+        }
+
+        .table-wrapper {
+            overflow-x:auto;
+        }
+
+        table {
+            width:100%;
+            min-width:1850px;
+            border-collapse:collapse;
+        }
+
+        thead tr {
+            background:var(--thead-bg);
+        }
+
+        th, td {
+            padding:15px;
+            text-align:left;
+            border-bottom:1px solid var(--card-border);
+            vertical-align:middle;
+        }
+
+        th {
+            color:var(--accent);
+            font-size:14px;
+            white-space:nowrap;
+        }
+
+        td {
+            color:var(--text-main);
+            font-size:14px;
+        }
+
+        tr:hover td {
+            background:var(--row-hover);
+        }
+
+        .badge {
+            display:inline-block;
+            padding:9px 14px;
+            border-radius:999px;
+            background:var(--pill-bg);
+            border:1px solid var(--accent);
+            color:var(--pill-text);
+            font-weight:700;
+            font-size:12px;
+        }
+
+        .review-btn,
+        .edit-btn,
+        .delete-btn {
+            display:inline-block;
+            text-decoration:none;
+            padding:10px 14px;
+            border-radius:12px;
+            font-weight:800;
+        }
+
+        .review-btn {
+            background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+            color:#111;
+        }
+
+        .edit-btn {
+            background:#1f6feb;
+            color:white;
+        }
+
+        .delete-btn {
+            background:#c62828;
+            color:white;
+        }
+
+        @media (max-width:1100px) {
+            .stats-row { grid-template-columns:1fr 1fr; }
+        }
+
+        @media (max-width:700px) {
+            .stats-row { grid-template-columns:1fr; }
+            .hero h1 { font-size:32px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <img src="{% static 'test_app/images/upperskills_logo.png' %}" alt="UpperSkills Logo" class="brand-logo-img">
+
+    
+
+            <div style="text-align:right;">
+                
+                <div style="margin-top:10px;">
+                    <button id="themeToggle" class="theme-toggle-btn" type="button">🌙 Dark / ☀ Light</button></br>
+                    <a href="{% url 'teacher_logout' %}" style="text-decoration:none; color:#ffd76b; font-weight:700;">Logout </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="hero">
+            <h1>Students Placement Results</h1>
+            <p>
+                Search any registered student by name or Student ID, then open the profile to review answers and correct the final results.
+            </p>
+        </section>
+
+        <section class="stats-row">
+            <div class="stat-box">
+                <h3>Total Students</h3>
+                <div class="value">{{ total_students }}</div>
+            </div>
+            <div class="stat-box">
+                <h3>System Skills</h3>
+                <div class="value">Listening + Writing</div>
+            </div>
+            <div class="stat-box">
+                <h3>Teacher Skills</h3>
+                <div class="value">Speaking + Reading</div>
+            </div>
+            <div class="stat-box">
+                <h3>Total Result</h3>
+                <div class="value">/40</div>
+            </div>
+        </section>
+
+        <section class="search-card">
+            <form method="get" class="search-form">
+                <input type="text" name="q" placeholder="Search by student name or ID..." value="{{ search_query }}">
+                <button type="submit" class="search-btn">Search</button>
+                <a href="{% url 'admin_dashboard' %}" class="clear-btn">Clear</a>
+            </form>
+        </section>
+
+        <section class="table-card">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Age</th>
+                            <th>Student ID</th>
+                            <th>Speaking Score</th>
+                            <th>Speaking Level</th>
+                            <th>Listening Reached</th>
+                            <th>Listening Score</th>
+                            <th>Listening Level</th>
+                            <th>Reading Score</th>
+                            <th>Reading Level</th>
+                            <th>Writing Reached</th>
+                            <th>Writing Score</th>
+                            <th>Writing Level</th>
+                            <th>Total</th>
+                            <th>Overall Level</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td>{{ student.full_name }}</td>
+                            <td>{{ student.age }}</td>
+                            <td>{{ student.student_id }}</td>
+                            <td>{{ student.speaking_score }}/10</td>
+                            <td><span class="badge">{{ student.speaking_level }}</span></td>
+                            <td><span class="badge">{{ student.listening_reached_level }}</span></td>
+                            <td>{{ student.listening_score }}/10</td>
+                            <td><span class="badge">{{ student.listening_level }}</span></td>
+                            <td>{{ student.reading_score }}/10</td>
+                            <td><span class="badge">{{ student.reading_level }}</span></td>
+                            <td><span class="badge">{{ student.writing_reached_level }}</span></td>
+                            <td>{{ student.writing_score }}/10</td>
+                            <td><span class="badge">{{ student.writing_level }}</span></td>
+                            <td><strong>{{ student.total_score }}/40</strong></td>
+                            <td><span class="badge">{{ student.overall_level }}</span></td>
+                            <td>
+                                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                                    <a href="{% url 'teacher_review' student.student_id %}" class="review-btn">Review</a>
+                                    <a href="{% url 'edit_student' student.student_id %}" class="edit-btn">Edit</a>
+                                    <a href="{% url 'delete_student' student.student_id %}" class="delete-btn">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="16" class="muted">No students found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const themeToggle = document.getElementById("themeToggle");
+
+        function applyTheme(theme) {
+            if (theme === "light") {
+                document.body.classList.add("light-mode");
+            } else {
+                document.body.classList.remove("light-mode");
+            }
+        }
+
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        applyTheme(savedTheme);
+
+        if (themeToggle) {
+            themeToggle.addEventListener("click", function () {
+                const isLight = document.body.classList.contains("light-mode");
+                const newTheme = isLight ? "dark" : "light";
+                localStorage.setItem("theme", newTheme);
+                applyTheme(newTheme);
+            });
+        }
+    </script>
+</body>
+</html>

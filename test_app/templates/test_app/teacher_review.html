@@ -1,0 +1,505 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Review Profile</title>
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'test_app/images/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: linear-gradient(135deg,#050505,#101010 45%,#0a0a0a);
+            --text-main: #ffffff;
+            --card-bg: rgba(255,255,255,0.03);
+            --card-border: rgba(244,180,0,0.18);
+            --muted-text: #d7d7d7;
+            --accent: #f4b400;
+            --accent-dark: #d89b00;
+            --input-bg: #0f0f0f;
+            --input-border: rgba(255,255,255,0.12);
+            --soft-btn-bg: rgba(255,255,255,0.06);
+            --soft-btn-border: rgba(255,255,255,0.08);
+            --pill-bg: rgba(244,180,0,0.10);
+            --pill-text: #ffd76b;
+        }
+
+        body.light-mode {
+            --bg-main: #f5f5f5;
+            --text-main: #1a1a1a;
+            --card-bg: #ffffff;
+            --card-border: #dddddd;
+            --muted-text: #333333;
+            --accent: #cc8400;
+            --accent-dark: #8a5b00;
+            --input-bg: #ffffff;
+            --input-border: #cfcfcf;
+            --soft-btn-bg: #ffffff;
+            --soft-btn-border: #d9d9d9;
+            --pill-bg: #fff1cc;
+            --pill-text: #7a4b00;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+
+        body {
+            min-height:100vh;
+            background:var(--bg-main);
+            color:var(--text-main);
+            padding:30px;
+        }
+
+        .page {
+            max-width:1380px;
+            margin:auto;
+        }
+
+        .top-actions {
+            display:flex;
+            justify-content:flex-end;
+            margin-bottom:18px;
+        }
+
+        .theme-toggle-btn {
+            border:none;
+            padding:12px 16px;
+            border-radius:14px;
+            font-weight:700;
+            cursor:pointer;
+            background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+            color:#111;
+        }
+
+        .top-card,
+        .section,
+        .field-card,
+        .answers-box,
+        .summary-box {
+            background:var(--card-bg);
+            border:1px solid var(--card-border);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+
+        .top-card {
+            border-radius:24px;
+            padding:28px;
+            margin-bottom:24px;
+        }
+
+        .top-card h1 {
+            font-size:38px;
+            margin-bottom:12px;
+            color: var(--text-main);
+        }
+
+        .student-line,
+        .section p,
+        .empty-note {
+            color:var(--muted-text);
+            line-height:1.9;
+            font-size:16px;
+        }
+
+        .badge {
+            display:inline-block;
+            padding:10px 16px;
+            border-radius:999px;
+            background:var(--pill-bg);
+            border:1px solid var(--accent);
+            color:var(--pill-text);
+            font-weight:700;
+            font-size:13px;
+            margin-right:8px;
+            margin-top:8px;
+        }
+
+        .section {
+            border-radius:24px;
+            padding:24px;
+            margin-bottom:20px;
+        }
+
+        .section h2 {
+            color:var(--accent);
+            font-size:28px;
+            margin-bottom:14px;
+        }
+
+        .answers-box {
+            border-radius:18px;
+            padding:18px;
+            margin-top:14px;
+        }
+
+        .level-block {
+            margin-bottom:18px;
+            padding:16px;
+            border-radius:16px;
+            background:var(--card-bg);
+            border:1px solid var(--card-border);
+        }
+
+        .level-title {
+            color:var(--accent);
+            font-size:20px;
+            font-weight:700;
+            margin-bottom:12px;
+        }
+
+        .answer-item {
+            margin-bottom:10px;
+            padding:12px 14px;
+            border-radius:12px;
+            background:var(--input-bg);
+            border:1px solid var(--input-border);
+        }
+
+        .answer-item strong {
+            color:var(--accent);
+        }
+
+        .answer-text {
+            color:var(--text-main);
+            margin-top:6px;
+            line-height:1.8;
+            white-space:pre-wrap;
+            word-break:break-word;
+        }
+
+        .form-grid {
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:18px;
+            margin-top:18px;
+        }
+
+        .field-card {
+            border-radius:18px;
+            padding:18px;
+        }
+
+        .field-card h3 {
+            color:var(--accent);
+            margin-bottom:12px;
+            font-size:20px;
+        }
+
+        .form-group {
+            margin-bottom:14px;
+        }
+
+        label {
+            display:block;
+            margin-bottom:8px;
+            font-weight:600;
+            color: var(--text-main);
+        }
+
+        input, select {
+            width:100%;
+            padding:14px;
+            border-radius:14px;
+            border:1px solid var(--input-border);
+            background:var(--input-bg);
+            color:var(--text-main);
+            outline:none;
+        }
+
+        .summary-grid {
+            display:grid;
+            grid-template-columns:repeat(6, 1fr);
+            gap:14px;
+            margin-top:18px;
+        }
+
+        .summary-box {
+            border-radius:18px;
+            padding:16px;
+            text-align:center;
+        }
+
+        .summary-box h4 {
+            color:var(--muted-text);
+            font-size:13px;
+            margin-bottom:8px;
+            font-weight:500;
+        }
+
+        .summary-box .value {
+            font-size:22px;
+            font-weight:800;
+            color:var(--accent);
+        }
+
+        .btn-row {
+            display:flex;
+            gap:12px;
+            flex-wrap:wrap;
+            margin-top:24px;
+        }
+
+        button, a.btn {
+            display:inline-block;
+            text-decoration:none;
+            border:none;
+            padding:14px 18px;
+            border-radius:14px;
+            font-weight:800;
+            cursor:pointer;
+        }
+
+        button {
+            background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+            color:#111;
+        }
+
+        a.btn {
+            background:var(--soft-btn-bg);
+            color:var(--text-main);
+            border:1px solid var(--soft-btn-border);
+        }
+
+        @media (max-width:1100px) {
+            .summary-grid { grid-template-columns:repeat(2, 1fr); }
+        }
+
+        @media (max-width:900px) {
+            .form-grid { grid-template-columns:1fr; }
+        }
+
+        @media (max-width:600px) {
+            .summary-grid { grid-template-columns:1fr; }
+            .top-card h1 { font-size:30px; }
+            .section h2 { font-size:24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="top-actions">
+            <button id="themeToggle" class="theme-toggle-btn" type="button">🌙 Dark / ☀ Light</button>
+        </div>
+
+        <div class="top-card">
+            <h1>Student Review Profile</h1>
+            <div class="student-line">
+                <strong>Name:</strong> {{ student.full_name }} |
+                <strong>Age:</strong> {{ student.age }} |
+                <strong>ID:</strong> {{ student.student_id }}
+                <br>
+                <span class="badge">Listening reached: {{ student.listening_reached_level }}</span>
+                <span class="badge">Writing reached: {{ student.writing_reached_level }}</span>
+            </div>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="section">
+                <h2>Listening</h2>
+                <p>Here you can see the real answers of this student in Listening, then correct the mark and choose the final level.</p>
+                <div class="answers-box">
+                    {% if listening_sections %}
+                        {% for section in listening_sections %}
+                            <div class="level-block">
+                                <div class="level-title">{{ section.level }}</div>
+                                {% for item in section.questions %}
+                                    <div class="answer-item">
+                                        <strong>{{ item.question_key|upper }}</strong>
+                                        <div class="answer-text">{{ item.answer }}</div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-note">No listening answers saved for this student.</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-grid">
+                    <div class="field-card">
+                        <h3>Listening Score</h3>
+                        <div class="form-group">
+                            <label>Score /10</label>
+                            <input type="number" min="0" max="10" name="listening_score" value="{{ student.listening_score }}">
+                        </div>
+                    </div>
+
+                    <div class="field-card">
+                        <h3>Listening Level</h3>
+                        <div class="form-group">
+                            <label>Final Level</label>
+                            <select name="listening_level">
+                                <option value="Seeds" {% if student.listening_level == 'Seeds' %}selected{% endif %}>Seeds</option>
+                                <option value="Sparks" {% if student.listening_level == 'Sparks' %}selected{% endif %}>Sparks</option>
+                                <option value="Rays" {% if student.listening_level == 'Rays' %}selected{% endif %}>Rays</option>
+                                <option value="Crystals" {% if student.listening_level == 'Crystals' %}selected{% endif %}>Crystals</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Writing</h2>
+                <p>Here you can see the real answers of this student in Writing, then correct the mark and choose the final level.</p>
+                <div class="answers-box">
+                    {% if writing_sections %}
+                        {% for section in writing_sections %}
+                            <div class="level-block">
+                                <div class="level-title">{{ section.level }}</div>
+                                {% for item in section.questions %}
+                                    <div class="answer-item">
+                                        <strong>{{ item.question_key|upper }}</strong>
+                                        <div class="answer-text">{{ item.answer }}</div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-note">No writing answers saved for this student.</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-grid">
+                    <div class="field-card">
+                        <h3>Writing Score</h3>
+                        <div class="form-group">
+                            <label>Score /10</label>
+                            <input type="number" min="0" max="10" name="writing_score" value="{{ student.writing_score }}">
+                        </div>
+                    </div>
+
+                    <div class="field-card">
+                        <h3>Writing Level</h3>
+                        <div class="form-group">
+                            <label>Final Level</label>
+                            <select name="writing_level">
+                                <option value="Seeds" {% if student.writing_level == 'Seeds' %}selected{% endif %}>Seeds</option>
+                                <option value="Sparks" {% if student.writing_level == 'Sparks' %}selected{% endif %}>Sparks</option>
+                                <option value="Rays" {% if student.writing_level == 'Rays' %}selected{% endif %}>Rays</option>
+                                <option value="Crystals" {% if student.writing_level == 'Crystals' %}selected{% endif %}>Crystals</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Speaking</h2>
+                <p>Speaking is corrected directly by the teacher. Here you only enter the mark and the level.</p>
+                <div class="form-grid">
+                    <div class="field-card">
+                        <h3>Speaking Score</h3>
+                        <div class="form-group">
+                            <label>Score /10</label>
+                            <input type="number" min="0" max="10" name="speaking_score" value="{{ student.speaking_score }}">
+                        </div>
+                    </div>
+                    <div class="field-card">
+                        <h3>Speaking Level</h3>
+                        <div class="form-group">
+                            <label>Final Level</label>
+                            <select name="speaking_level">
+                                <option value="Seeds" {% if student.speaking_level == 'Seeds' %}selected{% endif %}>Seeds</option>
+                                <option value="Sparks" {% if student.speaking_level == 'Sparks' %}selected{% endif %}>Sparks</option>
+                                <option value="Rays" {% if student.speaking_level == 'Rays' %}selected{% endif %}>Rays</option>
+                                <option value="Crystals" {% if student.speaking_level == 'Crystals' %}selected{% endif %}>Crystals</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Reading</h2>
+                <p>Reading is corrected directly by the teacher. Here you only enter the mark and the level.</p>
+                <div class="form-grid">
+                    <div class="field-card">
+                        <h3>Reading Score</h3>
+                        <div class="form-group">
+                            <label>Score /10</label>
+                            <input type="number" min="0" max="10" name="reading_score" value="{{ student.reading_score }}">
+                        </div>
+                    </div>
+                    <div class="field-card">
+                        <h3>Reading Level</h3>
+                        <div class="form-group">
+                            <label>Final Level</label>
+                            <select name="reading_level">
+                                <option value="Seeds" {% if student.reading_level == 'Seeds' %}selected{% endif %}>Seeds</option>
+                                <option value="Sparks" {% if student.reading_level == 'Sparks' %}selected{% endif %}>Sparks</option>
+                                <option value="Rays" {% if student.reading_level == 'Rays' %}selected{% endif %}>Rays</option>
+                                <option value="Crystals" {% if student.reading_level == 'Crystals' %}selected{% endif %}>Crystals</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Final Result</h2>
+                <p>After correction, the final score and overall level are calculated automatically.</p>
+
+                <div class="summary-grid">
+                    <div class="summary-box">
+                        <h4>Speaking</h4>
+                        <div class="value">{{ student.speaking_score }}/10</div>
+                    </div>
+                    <div class="summary-box">
+                        <h4>Listening</h4>
+                        <div class="value">{{ student.listening_score }}/10</div>
+                    </div>
+                    <div class="summary-box">
+                        <h4>Reading</h4>
+                        <div class="value">{{ student.reading_score }}/10</div>
+                    </div>
+                    <div class="summary-box">
+                        <h4>Writing</h4>
+                        <div class="value">{{ student.writing_score }}/10</div>
+                    </div>
+                    <div class="summary-box">
+                        <h4>Total</h4>
+                        <div class="value">{{ student.total_score }}/40</div>
+                    </div>
+                    <div class="summary-box">
+                        <h4>Overall Level</h4>
+                        <div class="value">{{ student.overall_level }}</div>
+                    </div>
+                </div>
+
+                <div class="btn-row">
+                    <button type="submit">Save Final Results</button>
+                    <a href="{% url 'admin_dashboard' %}" class="btn">Back to Dashboard</a>
+                    <a href="{% url 'result_page' student.student_id %}" class="btn">Open Final Result Page</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById("themeToggle");
+
+        function applyTheme(theme) {
+            if (theme === "light") {
+                document.body.classList.add("light-mode");
+            } else {
+                document.body.classList.remove("light-mode");
+            }
+        }
+
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        applyTheme(savedTheme);
+
+        if (themeToggle) {
+            themeToggle.addEventListener("click", function () {
+                const isLight = document.body.classList.contains("light-mode");
+                const newTheme = isLight ? "dark" : "light";
+                localStorage.setItem("theme", newTheme);
+                applyTheme(newTheme);
+            });
+        }
+    </script>
+</body>
+</html>

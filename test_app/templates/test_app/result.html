@@ -1,0 +1,368 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UpperSkills - Final Result</title>
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'test_app/images/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main:
+                radial-gradient(circle at 15% 25%, rgba(244,180,0,0.08), transparent 20%),
+                radial-gradient(circle at 85% 20%, rgba(244,180,0,0.06), transparent 20%),
+                linear-gradient(135deg, #050505, #101010 45%, #0a0a0a);
+            --text-main: #ffffff;
+            --card-bg: rgba(255,255,255,0.03);
+            --card-border: rgba(244,180,0,0.18);
+            --muted-text: #d7d7d7;
+            --accent: #f4b400;
+            --accent-dark: #d89b00;
+            --soft-btn-bg: rgba(255,255,255,0.06);
+            --soft-btn-border: rgba(255,255,255,0.08);
+            --pill-bg: rgba(244,180,0,0.10);
+            --pill-text: #ffd76b;
+        }
+
+        body.light-mode {
+            --bg-main: #f5f5f5;
+            --text-main: #1a1a1a;
+            --card-bg: #ffffff;
+            --card-border: #dddddd;
+            --muted-text: #333333;
+            --accent: #cc8400;
+            --accent-dark: #8a5b00;
+            --soft-btn-bg: #ffffff;
+            --soft-btn-border: #d9d9d9;
+            --pill-bg: #fff1cc;
+            --pill-text: #7a4b00;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+
+        body {
+            min-height:100vh;
+            background:var(--bg-main);
+            color:var(--text-main);
+            padding:30px;
+        }
+
+        .top-actions {
+            max-width:1300px;
+            margin:0 auto 18px;
+            display:flex;
+            justify-content:flex-end;
+        }
+
+        .theme-toggle-btn {
+            border:none;
+            padding:12px 16px;
+            border-radius:14px;
+            font-weight:700;
+            cursor:pointer;
+            background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+            color:#111;
+        }
+
+        .wrapper {
+            max-width:1300px;
+            margin:auto;
+            display:grid;
+            grid-template-columns: 1.1fr 1fr;
+            border-radius:28px;
+            overflow:hidden;
+            background:var(--card-bg);
+            border:1px solid var(--card-border);
+            box-shadow:0 20px 50px rgba(0,0,0,0.08);
+        }
+
+        .left {
+            padding:42px 36px;
+            position:relative;
+            border-right:1px solid var(--card-border);
+            background: var(--card-bg);
+        }
+
+        .left::after {
+            content:"";
+            position:absolute;
+            left:0;
+            bottom:0;
+            width:100%;
+            height:8px;
+            background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+        }
+
+        .logo {
+            width:220px;
+            max-width:100%;
+            margin-bottom:26px;
+        }
+
+        .badge {
+            display:inline-block;
+            padding:10px 14px;
+            border-radius:999px;
+            background:var(--pill-bg);
+            border:1px solid var(--accent);
+            color:var(--pill-text);
+            font-weight:700;
+            font-size:13px;
+            margin-bottom:18px;
+        }
+
+        .left h1 {
+            font-size:44px;
+            line-height:1.15;
+            margin-bottom:14px;
+            color: var(--text-main);
+        }
+
+        .left p,
+        .sub {
+            color:var(--muted-text);
+            line-height:1.9;
+            font-size:16px;
+            margin-bottom:24px;
+        }
+
+        .student-box,
+        .skill-card,
+        .summary-box {
+            background:var(--card-bg);
+            border:1px solid var(--card-border);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+
+        .student-box {
+            padding:18px;
+            border-radius:18px;
+            color:var(--text-main);
+            line-height:1.9;
+        }
+
+        .right {
+            padding:42px 36px;
+            background:var(--card-bg);
+        }
+
+        .section-title {
+            font-size:30px;
+            margin-bottom:14px;
+            color: var(--text-main);
+        }
+
+        .skills-grid {
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:16px;
+            margin-bottom:22px;
+        }
+
+        .skill-card {
+            border-radius:18px;
+            padding:18px;
+        }
+
+        .skill-card h3 {
+            font-size:18px;
+            margin-bottom:10px;
+            color: var(--text-main);
+        }
+
+        .small-label {
+            color:var(--muted-text);
+            font-size:13px;
+            margin-bottom:6px;
+        }
+
+        .score {
+            font-size:24px;
+            font-weight:800;
+            color:var(--accent);
+            margin-bottom:10px;
+        }
+
+        .level-badge {
+            display:inline-block;
+            padding:9px 12px;
+            border-radius:999px;
+            background:var(--pill-bg);
+            border:1px solid var(--accent);
+            color:var(--pill-text);
+            font-weight:700;
+            font-size:12px;
+        }
+
+        .summary-box {
+            border-radius:18px;
+            padding:20px;
+            margin-bottom:22px;
+        }
+
+        .summary-box h3 {
+            color:var(--accent);
+            font-size:20px;
+            margin-bottom:12px;
+        }
+
+        .summary-row {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:20px;
+            padding:10px 0;
+            border-bottom:1px solid var(--card-border);
+        }
+
+        .summary-row:last-child {
+            border-bottom:none;
+        }
+
+        .summary-row span:first-child {
+            color:var(--muted-text);
+        }
+
+        .summary-row span:last-child {
+            font-weight:800;
+            color: var(--text-main);
+        }
+
+        .btns {
+            display:flex;
+            gap:12px;
+            flex-wrap:wrap;
+        }
+
+        .main-btn,
+        .second-btn {
+            text-decoration:none;
+            padding:14px 18px;
+            border-radius:14px;
+            font-weight:800;
+        }
+
+        .main-btn {
+            background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+            color:#111;
+        }
+
+        .second-btn {
+            background:var(--soft-btn-bg);
+            color:var(--text-main);
+            border:1px solid var(--soft-btn-border);
+        }
+
+        @media (max-width:1000px) {
+            .wrapper { grid-template-columns:1fr; }
+            .left h1 { font-size:34px; }
+            .skills-grid { grid-template-columns:1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-actions">
+        <button id="themeToggle" class="theme-toggle-btn" type="button">🌙 Dark / ☀ Light</button>
+    </div>
+
+    <div class="wrapper">
+        <div class="left">
+            <img src="{% static 'test_app/images/upperskills_logo.png' %}" alt="UpperSkills Logo" class="logo">
+            <span class="badge">Final Placement Result</span>
+            <h1>English Placement Test Completed Successfully</h1>
+            <p>
+                This result summarizes the student’s performance across all four English skills.
+                The scores and levels below represent the final corrected evaluation.
+            </p>
+
+            <div class="student-box">
+                <strong>Full Name:</strong> {{ student.full_name }}<br>
+                <strong>Age:</strong> {{ student.age }}<br>
+                <strong>Student ID:</strong> {{ student.student_id }}<br>
+                <strong>Listening Reached Level:</strong> {{ student.listening_reached_level }}<br>
+                <strong>Writing Reached Level:</strong> {{ student.writing_reached_level }}
+            </div>
+        </div>
+
+        <div class="right">
+            <h2 class="section-title">Detailed Skill Results</h2>
+            <p class="sub">
+                Each skill is evaluated separately with its own score and level, followed by the final total and overall placement.
+            </p>
+
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>Speaking</h3>
+                    <div class="small-label">Score</div>
+                    <div class="score">{{ student.speaking_score }}/10</div>
+                    <span class="level-badge">{{ student.speaking_level }}</span>
+                </div>
+
+                <div class="skill-card">
+                    <h3>Listening</h3>
+                    <div class="small-label">Score</div>
+                    <div class="score">{{ student.listening_score }}/10</div>
+                    <span class="level-badge">{{ student.listening_level }}</span>
+                </div>
+
+                <div class="skill-card">
+                    <h3>Reading</h3>
+                    <div class="small-label">Score</div>
+                    <div class="score">{{ student.reading_score }}/10</div>
+                    <span class="level-badge">{{ student.reading_level }}</span>
+                </div>
+
+                <div class="skill-card">
+                    <h3>Writing</h3>
+                    <div class="small-label">Score</div>
+                    <div class="score">{{ student.writing_score }}/10</div>
+                    <span class="level-badge">{{ student.writing_level }}</span>
+                </div>
+            </div>
+
+            <div class="summary-box">
+                <h3>Final Summary</h3>
+                <div class="summary-row">
+                    <span>Total Score</span>
+                    <span>{{ student.total_score }}/40</span>
+                </div>
+                <div class="summary-row">
+                    <span>Overall Level</span>
+                    <span>{{ student.overall_level }}</span>
+                </div>
+            </div>
+
+            <div class="btns">
+                <a href="{% url 'skills_page' student.student_id %}" class="main-btn">Back to Skills</a>
+                <a href="{% url 'admin_dashboard' %}" class="second-btn">Teacher Panel</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById("themeToggle");
+
+        function applyTheme(theme) {
+            if (theme === "light") {
+                document.body.classList.add("light-mode");
+            } else {
+                document.body.classList.remove("light-mode");
+            }
+        }
+
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        applyTheme(savedTheme);
+
+        if (themeToggle) {
+            themeToggle.addEventListener("click", function () {
+                const isLight = document.body.classList.contains("light-mode");
+                const newTheme = isLight ? "dark" : "light";
+                localStorage.setItem("theme", newTheme);
+                applyTheme(newTheme);
+            });
+        }
+    </script>
+</body>
+</html>

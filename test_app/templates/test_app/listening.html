@@ -1,0 +1,137 @@
+{% load static %}
+<img src="{% static 'test_app/images/upperskills_logo.png' %}" alt="UpperSkills Logo">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listening Test</title>
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'test_app/images/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+        body { background:#0d0d0d; color:#fff; padding:30px; }
+        .box {
+            max-width:950px; margin:auto; background:#171717; padding:30px;
+            border-radius:22px; border:1px solid rgba(244,180,0,0.20);
+        }
+        .top {
+            display:flex; justify-content:space-between; align-items:center; gap:20px; margin-bottom:24px; flex-wrap:wrap;
+        }
+        h1 { font-size:34px; }
+        .timer {
+            background:rgba(244,180,0,0.10);
+            border:1px solid rgba(244,180,0,0.25);
+            color:#ffd76b;
+            padding:12px 16px;
+            border-radius:14px;
+            font-weight:800;
+            font-size:20px;
+        }
+        .section { margin-bottom:22px; }
+        .section h2 { color:#f4b400; margin-bottom:8px; }
+        .question { margin-top:10px; margin-bottom:14px; }
+        label { display:block; margin-bottom:8px; font-weight:600; }
+        textarea, input {
+            width:100%;
+            padding:14px;
+            border-radius:14px;
+            border:1px solid rgba(255,255,255,0.12);
+            background:#101010;
+            color:white;
+            outline:none;
+        }
+        textarea { min-height:90px; resize:vertical; }
+        button {
+            width:100%;
+            padding:15px;
+            border:none;
+            border-radius:14px;
+            background:linear-gradient(135deg,#f4b400,#d89b00);
+            color:#111;
+            font-weight:800;
+            font-size:16px;
+            cursor:pointer;
+            margin-top:12px;
+        }
+        .student-line {
+            margin-bottom:18px; color:#ddd; line-height:1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="top">
+            <h1>Listening Test (10 points)</h1>
+            <div class="timer" id="timer">04:00</div>
+        </div>
+
+        <div class="student-line">
+            <strong>{{ student.full_name }}</strong> | Age: {{ student.age }} | ID: {{ student.student_id }}
+        </div>
+
+        <form method="post" id="listeningForm">
+    {% csrf_token %}
+
+            <div class="section">
+                <h2>Seeds</h2>
+                <div class="question">
+                    <label>1. Write the instruction:</label>
+                    <input type="text" name="q1" placeholder='Example: Stand up'>
+                </div>
+                <div class="question">
+                    <label>2. Write the instruction:</label>
+                    <input type="text" name="q2" placeholder='Example: Touch your head'>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Rays</h2>
+                <p>Tom has ten red bikes.</p>
+                <div class="question">
+                    <label>3. What color is the bike?</label>
+                    <input type="text" name="q3">
+                </div>
+                <div class="question">
+                    <label>4. How many bikes does he have?</label>
+                    <input type="text" name="q4">
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Crystals</h2>
+                <p>Yesterday, I went to the park with my family. We had lunch and played games.</p>
+                <div class="question">
+                    <label>5. Write a short answer including where I went, who I went with, and what we did.</label>
+                    <textarea name="q5"></textarea>
+                </div>
+            </div>
+
+            <button type="submit">Submit Listening Test</button>
+        </form>
+    </div>
+
+    <script>
+        let timeLeft = 240;
+        const timerDisplay = document.getElementById("timer");
+        const form = document.getElementById("listeningForm");
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent =
+                String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+
+            if (timeLeft <= 0) {
+                form.submit();
+            } else {
+                timeLeft--;
+            }
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>

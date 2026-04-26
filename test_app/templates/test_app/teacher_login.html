@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Login</title>
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'test_app/images/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg,#050505,#101010 45%,#0a0a0a);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(244,180,0,0.18);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+        }
+
+        .logo {
+            width: 180px;
+            max-width: 100%;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 34px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #d7d7d7;
+            line-height: 1.8;
+            margin-bottom: 22px;
+        }
+
+        .error-box {
+            background: #ffe5e5;
+            color: #b30000;
+            border: 1px solid #ffb3b3;
+            padding: 14px 16px;
+            border-radius: 14px;
+            margin-bottom: 18px;
+            font-weight: 600;
+            line-height: 1.7;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: #0f0f0f;
+            color: white;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #f4b400;
+            box-shadow: 0 0 0 4px rgba(244,180,0,0.12);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg,#f4b400,#d89b00);
+            color: #111;
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <img src="{% static 'test_app/images/upperskills_logo.png' %}" alt="UpperSkills Logo" class="logo">
+
+        <h1>Teacher Login</h1>
+        <p class="subtitle">
+            Only teachers and academy staff can access the review panel.
+        </p>
+
+        {% if error_message %}
+            <div class="error-box">{{ error_message }}</div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" required>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>

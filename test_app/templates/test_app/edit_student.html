@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student</title>
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'test_app/images/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+        body {
+            min-height:100vh;
+            background:linear-gradient(135deg,#050505,#101010 45%,#0a0a0a);
+            color:white;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:30px;
+        }
+        .box {
+            width:100%;
+            max-width:600px;
+            background:rgba(255,255,255,0.03);
+            border:1px solid rgba(244,180,0,0.18);
+            border-radius:24px;
+            padding:28px;
+        }
+        h1 { margin-bottom:20px; color:#f4b400; }
+        .form-group { margin-bottom:16px; }
+        label { display:block; margin-bottom:8px; font-weight:600; }
+        input {
+            width:100%;
+            padding:14px;
+            border-radius:14px;
+            border:1px solid rgba(255,255,255,0.12);
+            background:#0f0f0f;
+            color:white;
+            outline:none;
+        }
+        .btn-row {
+            display:flex;
+            gap:12px;
+            flex-wrap:wrap;
+            margin-top:18px;
+        }
+        button, a {
+            text-decoration:none;
+            border:none;
+            padding:14px 18px;
+            border-radius:14px;
+            font-weight:800;
+            cursor:pointer;
+        }
+        button {
+            background:linear-gradient(135deg,#f4b400,#d89b00);
+            color:#111;
+        }
+        a {
+            background:rgba(255,255,255,0.06);
+            color:white;
+            border:1px solid rgba(255,255,255,0.08);
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Edit Student</h1>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="full_name" value="{{ student.full_name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Age</label>
+                <input type="number" name="age" value="{{ student.age }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Student ID</label>
+                <input type="text" name="student_id" value="{{ student.student_id }}" required>
+            </div>
+
+            <div class="btn-row">
+                <button type="submit">Save Changes</button>
+                <a href="{% url 'admin_dashboard' %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
